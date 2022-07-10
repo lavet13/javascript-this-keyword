@@ -290,6 +290,7 @@ test();
 
 console.log(test1, test2);
 */
+
 /*
 
 // subtle distinction between primitive types and reference types
@@ -311,3 +312,44 @@ friend.age = 27;
 console.log('Me:', me);
 console.log('Friend:', friend);
 */
+
+// Primitive types
+let lastName = 'Williams';
+let oldLastName = lastName;
+lastName = 'Davis';
+
+// work as expected
+console.log(lastName, oldLastName);
+
+// reference types
+const jessica = {
+  firstName: 'Jessica',
+  lastName: 'Williams',
+  age: 27,
+};
+
+// this won't give us the result that we expect...
+const marriedJessica = jessica;
+marriedJessica.lastName = 'Davis';
+
+console.log(`Before marriage:`, jessica);
+console.log(`After marriage:`, marriedJessica);
+// marriedJessica = {};
+
+// Copying objects
+const jessica2 = {
+  firstName: 'Jessica',
+  lastName: 'Williams',
+  age: 27,
+  family: ['Alice', 'Bob'],
+};
+
+// const jessicaCopy = Object.assign({}, jessica2); // shallow copy
+const jessicaCopy = JSON.parse(JSON.stringify(jessica2)); // deep copy
+jessicaCopy.lastName = 'Davis';
+
+jessicaCopy.family.push('Mary');
+jessicaCopy.family.push('John');
+
+console.log(`Before marriage:`, jessica2);
+console.log(`After marriage:`, jessicaCopy);
