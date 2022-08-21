@@ -23,50 +23,49 @@
 // first();
 
 // Example 2
-// function calcAge (birthYear) {
-//     const age = 2037 - birthYear;
+// function calcAge(birthYear) {
+//   const age = 2037 - birthYear;
 
-//     function printAge() {
-//         let output = `${firstName}, you are ${age}, born in ${birthYear}`;
-//         console.log(output);
+//   function printAge() {
+//     let output = `${firstName}, you are ${age}, born in ${birthYear}`;
+//     console.log(output);
 
-//         if(birthYear >= 1981 && birthYear <= 1996) {
-//             var millenial = true;
-//             // Creating NEW variable with the same name as outer scope's variable
-//             const firstName = () => 'Steven';
+//     if (birthYear >= 1981 && birthYear <= 1996) {
+//       var millenial = true; // var didn't work with block-scope ES6 feature
+//       // Creating NEW variable with the same name as outer scope's variable
+//       const firstName = () => 'Steven';
 
-//             // Reassigning outer scope's variable
-//             output = 'NEW OUTPUT!';
+//       // Reassigning outer scope's variable
+//       output = 'NEW OUTPUT!';
 
-//             const str = `Oh, and you're a millenial, ${firstName()}`;
-//             console.log(str);
+//       const str = `Oh, and you're a millenial, ${firstName()}`;
+//       console.log(str);
 
-//             function add (a, b) { // only in strict mode
-//                 return a + b;
-//             }
+//       function add(a, b) {
+//         // only in strict mode, means that you can only invoke the function inside of this block-scope, in sloppy mode rules don't apply to block-scope obviously
+//         return a + b;
+//       }
 
-//             console.log(add(1, 1));
-//         }
-//         console.log(millenial);
-//         console.log(output);
-//         // console.log(add(1, 1)); // referenceError
-//         // console.log(str); // referenceError
+//       console.log(add(1, 1));
 //     }
+//     console.log(millenial);
+//     console.log(output);
+//     // console.log(add(1, 1)); // referenceError
+//     // console.log(str); // referenceError
+//   }
 
-//     printAge();
+//   printAge();
 
-//     return age;
+//   return age;
 // }
 
 // const firstName = 'Jonas';
 // calcAge(1991);
 
-// console.log(age); // referenceError
-// printAge(); // referenceError
+// console.log(age); // referenceError, const variable that is inside the function
+// printAge(); // referenceError, because it located inside another function
 
 // Example 3
-
-// using var or let or const either with the function expression or arrow function
 
 // const myName = 'Jonas';
 
@@ -82,34 +81,35 @@
 //     console.log(x);
 // }
 
-// Example 4
 /*
+// Example 4
+
+// using var or let or const either with the function expression or arrow function
 
 // Variables
 console.log(me);
 // console.log(job);
 // console.log(year);
 
-var me = "Jonas";
+var me = 'Jonas';
 let job = 'teacher';
 const year = 1991;
 
-// Functions 
+// Functions
 console.log(addDecl(2, 3));
-// console.log(addExpr(2, 3));
-console.log(addArrow);
-// console.log(addArrow(2, 3));
+// console.log(addExpr(2, 3)); // addExpr is not a function
+console.log(typeof addArrow); // undefined, it is not defined before this statement
+// console.log(addArrow(2, 3)); // addArrow is not a function
 
-function addDecl (a, b) {
-    return a + b;
+function addDecl(a, b) {
+  return a + b;
 }
 
 var addExpr = function (a, b) {
-    return a + b;
+  return a + b;
 };
 
 var addArrow = (a, b) => a + b;
-
 */
 
 /*
@@ -149,28 +149,27 @@ console.log(z === window.z);
 
 // Event listener 👉 this = <DOM element that the handler is attached to>
 
-// this does NOT point to the function itself, and also NOT the its variable environment!
+// this does NOT point to the function itself, and also NOT the its(function) variable environment!
 
 
 console.log(this);
 
 const calcAge = function (birthYear) {
-    console.log(2037 - birthYear);
-    console.log(this);
+  console.log(2037 - birthYear);
+  console.log(this); // undefined
 
-    // const test = () => {
-    //     console.log(this);
-    // };
+  // const test = () => {
+  //   console.log(this); // undefined, because it inherits the "this" value of arrow's function outer lexical scope which is the function expression (calcAge)
+  // };
 
-    // test();
+  // test();
 };
 
 calcAge(1991);
 
-
 const calcAgeArrow = birthYear => {
-    console.log(2037 - birthYear);
-    console.log(this);
+  console.log(2037 - birthYear);
+  console.log(this); // window object, because what is the arrow function does is to point to the outer lexical scope, in this case is the global object which is the window object
 };
 
 calcAgeArrow(1980);
@@ -201,7 +200,7 @@ f();
 
 // Pitfalls in both regular functions and arrow functions
 
-// var firstName = 'Matilda'; // creates a property in the window object which is equals to undefined
+// var firstName = 'Matilda'; // creates a property in the window object
 
 const jonas = {
   firstName: 'Jonas',
@@ -212,7 +211,7 @@ const jonas = {
 
     try {
       /*
-            // regular function inside of a method didn't get the this keyword from the parent scope
+            // regular function inside of a method didn't get the this keyword from the method basically 
             // const isMillenial = function() {
             //     console.log(this);
             //     console.log(this.year >= 1981 && this.year <= 1996);
@@ -222,9 +221,9 @@ const jonas = {
 
       /*
 
-            // regular function inside of a method didn't get the this keyword from the parent scope
+            // regular function inside of a method didn't get the this keyword from the method basically
             // Solution 1 to the this keyword
-            const self = this; // the way we can preserve the this keyword, this can also be called "that", so that I might also see.
+            const self = this; // the way we can preserve the this keyword, this can also be called "self", so that I might also see.
             function isMillenial() {
                 console.log(self);
                 console.log(self.year >= 1981 && self.year <= 1996);
@@ -253,27 +252,28 @@ const jonas = {
   },
 };
 
-// jonas.greet();
+jonas.greet();
 
 jonas.calcAge();
 
-/*
 // arguments keyword
-const addExpr = function (a, b) {
-    console.log(arguments);
-    return a + b;
-};
+// const addExpr = function (a, b) {
+//   console.log(arguments); // iterable
+//   for (let arg of arguments) {
+//     console.log(arg);
+//   }
+//   return a + b;
+// };
 
-addExpr(2, 3);
-addExpr(2, 3, 8, 12);
+// addExpr(2, 3);
+// addExpr(2, 3, 8, 12);
 
-const addArrow = (a, b) => {
-    console.log(arguments);
-    return a + b;
-};
+// const addArrow = (a, b) => {
+//   // console.log(arguments); // is not defined
+//   return a + b;
+// };
 
-addArrow(2, 3);
-
+// addArrow(2, 3);
 
 /*
 // you wouldn't get access to a function outside of the block scope if it's working in strict mode
