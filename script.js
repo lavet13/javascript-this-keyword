@@ -198,6 +198,7 @@ f();
 
 */
 
+///////////////////////////////////////////////////////////////////
 // Pitfalls in both regular functions and arrow functions
 
 // var firstName = 'Matilda'; // creates a property in the window object
@@ -329,7 +330,7 @@ const jessica = {
 };
 
 // this won't give us the result that we expect...
-const marriedJessica = jessica;
+const marriedJessica = jessica; // SOLVE copy a reference, not even creating new object, just simple assigning the address of the object stored in the heap
 marriedJessica.lastName = 'Davis';
 
 console.log(`Before marriage:`, jessica);
